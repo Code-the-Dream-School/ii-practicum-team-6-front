@@ -1,10 +1,12 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API_AUTH_URL from "../config";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
   const navigate = useNavigate();
 
 
@@ -20,7 +22,13 @@ export const UserProvider = ({ children }) => {
         const data = await res.json();
         setUser(data);
       } catch (err) {
-        setUser(null);
+
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));;
+        } else {
+          setUser(null);
+        }
       }
     };
 

@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../components/UserContext';
 import { useNavigate } from 'react-router-dom';
 import API_AUTH_URL from '../config';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignIn = () => {
   const { setUser } = useUser();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // handle submit function is async so it can use await
   const handleSubmit = async (e) => {
@@ -25,11 +28,10 @@ const SignIn = () => {
           'Accept': 'application/json'
         },
         body: JSON.stringify({ email, password })
-
       });
       console.log('Response:', response);
 
-      
+
       const body = await response.json();
       console.log('Body:', body);
 
@@ -39,33 +41,34 @@ const SignIn = () => {
       };
 
 
-      const data = body.data;
-      console.log('data:', data);
-      const user = data.user;
-      console.log('user:', user);
-
-      setUser(user);
-      if (body.data?.user) {
-        setUser(body.data.user);
+      
+      const user = body.data?.user;
+      if (user) {
+        setUser(user);
+        if (rememberMe) {
+          localStorage.setItem('user', JSON.stringify(user));
+        }
         navigate('/');
       } else {
-        throw new Error(bosy.message || 'Login Failed');
+        throw new Error('User data not found');
       }
-
-
     } catch (err) {
       console.error('Login error:', err.message);
       setError(err.message);
+      setError('Something went wrong, please try again');
     }
   };
 
 
-
-
-
   return (
-    <div className="flex justify-center items-center min-h-screen  px-4">
+    <div className="flex justify-center items-center min-h-screen  px-4 py-8 bg-gray-50 overflow-hidden">
       <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
+        {/* Error Popup */}
+        {error && (
+  <p className="text-red-500 text-sm text-center">{error}</p>
+)}
+
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-xl font-medium text-gray-900">Sign in</h5>
 
@@ -84,25 +87,34 @@ const SignIn = () => {
           </div>
 
 
-          <div>
+          <div className="relative">
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">
               Your Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               placeholder="......"
               required
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
+            <div
+              className="absolute top-[60%] right-0 pr-3 flex items-center cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(prev => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
           </div>
+
 
           <div className="flex items-start justify-between">
             <div className="flex items-center">
               <input
                 id="remember"
                 type="checkbox"
+                checked = {rememberMe}
+                onChange={() => setRememberMe(prev => !prev)}
                 className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300"
               />
               <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">
