@@ -1,6 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {useUser} from '../components/UserContext';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../components/UserContext';
 import API_URL from '../config';
 
 const UserDropdown = () => {
@@ -12,7 +12,7 @@ const UserDropdown = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${API_URL}logout`, {
+      const response = await fetch(`${API_URL}auth/logout`, {
         method: 'POST',
         credentials: 'include',
 

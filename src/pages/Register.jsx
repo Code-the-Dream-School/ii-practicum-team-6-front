@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {useUser} from '../components/UserContext';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../components/UserContext';
 import API_URL from '../config';
 
 const Register = () => {
@@ -34,7 +34,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch(`${API_URL}register`, {
+      const response = await fetch(`${API_URL}auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

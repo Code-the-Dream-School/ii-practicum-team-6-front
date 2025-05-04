@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
-import {useUser} from '../components/UserContext';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useUser } from '../components/UserContext';
+import { useNavigate } from 'react-router-dom';
 import API_URL from '../config';
 
 const SignIn = () => {
@@ -18,7 +18,7 @@ const SignIn = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await fetch(`${API_URL}login`, {
+      const response = await fetch(`${API_URL}auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
