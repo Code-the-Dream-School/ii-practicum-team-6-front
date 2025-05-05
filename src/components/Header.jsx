@@ -10,6 +10,7 @@ import UserDropdown from './UserDropdown';
 const Header = () => {
   const { user } = useUser();
 
+  console.log('User context in Header:', user); // Debugging line
 
   return (
     <header className="w-full px-6 py-4 flex justify-between items-center border-b border-gray-300 bg-white">

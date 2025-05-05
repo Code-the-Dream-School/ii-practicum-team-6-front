@@ -6,7 +6,9 @@ import API_AUTH_URL from '../config';
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { setUser } = useUser();
+  const userContext = useUser();
+  const user = userContext?.user;
+  const setUser = userContext?.setUser;
   const navigate = useNavigate();
 
 
@@ -15,33 +17,27 @@ const UserDropdown = () => {
       const response = await fetch(`${API_AUTH_URL}logout`, {
         method: 'POST',
         credentials: 'include',
-
         headers: {
           'Content-Type': 'application/json',
 
         },
       });
 
-      const data = await response.json();
+      //const data = await response.json();
 
       if (!response.ok) {
         const data = await response.json();
         console.warn('Logout warning:', data.message);
       }
-
-
       setUser(null);
-
       navigate('/');
-      //window.location.href = '/';
-
 
     } catch (err) {
       console.error('Logout Error:', err.message);
       setUser(null);
-    
+
       navigate('/');
-      //window.location.href = '/';
+
     }
   };
 
@@ -56,6 +52,7 @@ const UserDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  if (!user) return null;
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <div>
@@ -89,6 +86,15 @@ const UserDropdown = () => {
             >
               My Profile
             </Link>
+
+            {!user?.profileCompleted && (
+              <Link
+                to="/edit-profile"
+                className="block px-4 py-2 text-sm text-blue-600 font-medium hover:bg-gray-100"
+              >
+                Complete Profile
+              </Link>
+            )}
 
             <button
               onClick={handleLogout}

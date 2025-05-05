@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../components/UserContext';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,16 @@ const SignIn = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   // handle submit function is async so it can use await
   const handleSubmit = async (e) => {
@@ -37,11 +47,9 @@ const SignIn = () => {
 
 
       if (!body.success) {
-        throw new Error(data.message || 'Login Failed');
+        throw new Error(data.message || 'Authentication failed. Wrong email or password');
       };
 
-
-      
       const user = body.data?.user;
       if (user) {
         setUser(user);
@@ -55,7 +63,7 @@ const SignIn = () => {
     } catch (err) {
       console.error('Login error:', err.message);
       setError(err.message);
-      setError('Something went wrong, please try again');
+      setError('Authentication failed. Wrong email or password');
     }
   };
 
@@ -63,14 +71,30 @@ const SignIn = () => {
   return (
     <div className="flex justify-center items-center min-h-screen  px-4 py-8 bg-gray-50 overflow-hidden">
       <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
-        {/* Error Popup */}
-        {error && (
-  <p className="text-red-500 text-sm text-center">{error}</p>
-)}
-
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <h5 className="text-xl font-medium text-gray-900">Sign in</h5>
+          <div className="text-center">
+
+            <h5 className="text-xl font-medium text-gray-900 mb-2">Sign in</h5>
+            {error && (
+              <div className="text-red-600 text-sm py-2 px-3 bg-red-50 rounded-md flex items-center">
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                {error}
+              </div>
+            )}
+          </div>
 
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
@@ -113,7 +137,7 @@ const SignIn = () => {
               <input
                 id="remember"
                 type="checkbox"
-                checked = {rememberMe}
+                checked={rememberMe}
                 onChange={() => setRememberMe(prev => !prev)}
                 className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300"
               />
@@ -138,7 +162,6 @@ const SignIn = () => {
             <Link to="/register" className="text-blue-700 hover:underline">
               Create Account
             </Link>
-
           </div>
         </form>
       </div>
