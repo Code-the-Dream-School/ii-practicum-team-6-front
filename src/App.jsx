@@ -11,6 +11,7 @@ import EditProfile from './pages/EditProfile';
 import { UserProvider } from './context/UserContext.jsx';
 import Profile from './pages/Profile';
 import SubmitProject from './pages/SubmitProject.jsx';
+import TeamDashboard from './pages/TeamDashboard';
 
 
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<TeamDashboard/>}/>
           <Route path="/projects" element={<BrowseProjects />} />
           <Route path="/projects/new" element={<SubmitProject />} />
           <Route path="/projects/:id" element={<ProjectDetails />} />

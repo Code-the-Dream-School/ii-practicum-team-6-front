@@ -4,6 +4,8 @@ import Select from 'react-select';
 import ProjectCard from '../components/ProjectCard.jsx';
 import {FiRefreshCcw, FiChevronLeft, FiChevronRight} from 'react-icons/fi';
 import useProjects from '../hooks/useProjects';
+import IsLoading from '../components/IsLoading';
+import ShowError from '../components/ShowError.jsx';
 
 const BrowseProjects = () => {
   const DEFAULT_SORT = {value: 'newest'};
@@ -98,7 +100,7 @@ const BrowseProjects = () => {
           <div className="max-w-2xl mx-auto mb-8 space-y-4">
             <h2 className="text-xl font-semibold">Browse Projects</h2>
             <div className="flex justify-center">
-              <div>Loading projects...</div>
+              <IsLoading message="Loading projects..."/>
             </div>
           </div>
         </section>
@@ -111,7 +113,7 @@ const BrowseProjects = () => {
           <div className="max-w-2xl mx-auto mb-8 space-y-4">
             <h2 className="text-xl font-semibold">Browse Projects</h2>
             <div className="flex justify-center">
-              <div>Error: {error}</div>
+              <ShowError error={error}/>
             </div>
           </div>
         </section>
