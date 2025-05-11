@@ -10,6 +10,10 @@ export const instance = axios.create({
 });
 
 const codeCrewAPI = {
+  updateUser(data){
+  return instance.patch('/users/me', data);
+  },
+
   register(data) {
     return instance.post('/auth/register', data);
   },

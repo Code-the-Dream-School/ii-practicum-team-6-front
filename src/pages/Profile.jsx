@@ -1,31 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-
+import codeCrewAPI from '../config';
 
 const Profile = () => {
-  const { user } = useUser();
-  if (!user) return null;
+  const { user, updateUser } = useUser();
+  const navigate = useNavigate();
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg">Loading user profile...</p>
+      </div>
+    );
+  }
 
   const {
     username,
     email,
     country,
     bio,
-    skills = [],
-    photo,
+    skills: userSkills = [],
+    avatar,
   } = user;
 
-  const navigate = useNavigate();
 
+  //Normalize skills data
+  const skills = Array.isArray(userSkills)
+    ? userSkills.map(skill => skill.name || String(skill).trim()).filter(Boolean)
+    : typeof userSkills === 'string'
+      ? userSkills.split(',').map(skill => skill.trim()).filter(Boolean)
+      : [];
   const handleEditProfile = () => {
     navigate('/edit-profile');
   };
 
-
   return (
-
-
     <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-screen flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
         <div className="flex flex-col md:flex-row w-full">
@@ -48,10 +58,8 @@ const Profile = () => {
                 />
               </svg>
             </div>
-            {/* <h1 className="text-2xl font-bold text-indigo-800 dark:text-white mb-2">
-              {firstName} {lastName}
-            </h1> */}
-            <p className="text-gray-600 dark:text-gray-300 mb-4">@{username}</p>
+
+            <p className="text-gray-600 dark:text-gray-300 mb-4">{username}</p>
             <button
               onClick={handleEditProfile}
               className="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300"
@@ -96,7 +104,7 @@ const Profile = () => {
                 </svg>
                 {email}
               </li>
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <svg
                   className="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900"
                   fill="currentColor"
@@ -110,7 +118,7 @@ const Profile = () => {
                   />
                 </svg>
                 {country}
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

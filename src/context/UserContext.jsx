@@ -16,7 +16,6 @@ export const UserProvider = ({ children }) => {
       localStorage.removeItem('user');
       return null;
     }
-
   });
 
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ export const UserProvider = ({ children }) => {
         navigate('/');
       }
     };
-
     checkSession();
   }, []);
 
