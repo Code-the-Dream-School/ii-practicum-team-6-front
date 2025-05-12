@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import codeCrewAPI from '../config';
+import { useUser } from '../context/UserContext';
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user, setUser } = useUser();
 
   const [formData, setFormData] = useState({
-    username: user.username || '',
-    about: user.bio || '',
-    skills: '', // TODO: add skills to user object
-    email: user.email || '',
+    username: user?.username || '',
+    bio: user?.bio || '',
+    skills: user?.skills || [], // TODO: add skills to user object
+    email: user?.email || '',
     country: 'United States',
-    photo: '',
+    photo: null,
   });
-
-
-  // first and last name fields can be removed
+  console.log('skills:', user.skills);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,23 +25,42 @@ const EditProfile = () => {
     }));
   };
 
-  const handleFileChange = (e, field) => {
+  const handleFileChange = (e, photo) => {
     const file = e.target.files[0];
     setFormData((prevData) => ({
       ...prevData,
-      [field]: file,
+      [photo]: file,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const updatedUser = {
+        username: formData.username,
+        email: formData.email,
+        bio: formData.bio,
+        skills: formData.skills.split(',').map(skill => skill.trim()),
+      };
 
-    // request to update user profile on the server
-    // if successful, update local storage and navigate to profile page
-    // failure, show error message
 
-    navigate('/my-profile');
+      const response = await codeCrewAPI.updateUser(updatedUser);
+      if (response.data.success) {
+        alert('Profile updated successfully!');
+
+        localStorage.setItem('user', JSON.stringify(response.data.data.user));
+        setUser(response.data.data.user);
+
+        navigate('/my-profile');
+      } else {
+        alert('Error updating profile');
+      }
+    } catch (error) {
+      console.error('Profile update failed:', error);
+      alert('Failed to update profile');
+    }
   };
+
 
   return (
     <div className="max-w-4xl mx-auto px-6">
@@ -71,34 +89,7 @@ const EditProfile = () => {
                 </div>
               </div>
 
-              {/* First and Last Name Fields
-              <div className="sm:col-span-3">
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-900">First name</label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="firstName"
-                    id="firstName"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div> */}
 
-              {/* <div className="sm:col-span-3">
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-900">Last name</label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="lastName"
-                    id="lastName"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div> */}
 
               {/* Email and Country Fields */}
               <div className="sm:col-span-4">
@@ -139,11 +130,11 @@ const EditProfile = () => {
             <label htmlFor="about" className="block text-sm font-medium text-gray-900">About</label>
             <div className="mt-2">
               <textarea
-                name="about"
-                id="about"
+                name="bio"
+                id="bio"
                 rows="3"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
-                value={formData.about}
+                value={formData.bio}
                 onChange={handleChange}
                 placeholder='Write a few sentences about yourself' // make it more engaging
               />
