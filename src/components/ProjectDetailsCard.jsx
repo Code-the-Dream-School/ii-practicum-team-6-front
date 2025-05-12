@@ -24,12 +24,12 @@ const ProjectDetailsCard = ({project}) => {
                 <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-700 mb-2">Required Skills:</h4>
                     <div className="flex flex-wrap gap-2">
-                        {project.reqSkills.map((skill) => (
+                        {project.reqSkills.map((skill,id) => (
                             <span
-                                key={skill._id}
+                                key={id}
                                 className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs"
                             >
-                                       {skill.name}
+                                       {skill}
                                  </span>
                         ))}
                     </div>
@@ -39,7 +39,7 @@ const ProjectDetailsCard = ({project}) => {
                 <div className="flex justify-between mb-1">
                         <span
                             className="text-sm text-gray-600">Team ({project.teamMembers.length} of {project.reqSpots} spots filled)</span>
-                    <span className="text-sm text-gray-600">{teamFilled}%</span>
+                    <span className="text-sm text-gray-600">{Math.ceil(teamFilled)}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
