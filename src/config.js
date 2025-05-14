@@ -14,6 +14,14 @@ const codeCrewAPI = {
   return instance.patch('/users/me', data);
   },
 
+  getAllSkills() {
+    return instance.get('/skills');
+  },
+
+  searchSkills(searchBody) {
+    return instance.post('/skills/search', { searchBody});
+  },
+  
   register(data) {
     return instance.post('/auth/register', data);
   },

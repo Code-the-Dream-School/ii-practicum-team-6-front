@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import codeCrewAPI from '../config';
 import { useUser } from '../context/UserContext';
+import Select from 'react-select';
+
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -10,12 +12,62 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({
     username: user?.username || '',
     bio: user?.bio || '',
-    skills: user?.skills || [], // TODO: add skills to user object
+    skills: user?.skills || [],
     email: user?.email || '',
     country: 'United States',
     photo: null,
   });
   console.log('skills:', user.skills);
+
+  const [skillOptions, setSkillOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await codeCrewAPI.getAllSkills();
+        const options = response.data.data.skills.map(skill => ({
+          value: skill.name,
+          label: skill.name
+        }));
+        setSkillOptions(options);
+
+      } catch (error) {
+        console.error('Error fetching skills:', error);
+      }
+    };
+    fetchSkills();
+  }), [];
+
+  // const skillOptions = [
+  //   'React',
+  //   'JavaScript',
+  //   'Python',
+  //   'Node.js',
+  //   'HTML/CSS',
+  //   'Data Science',
+  //   'UI/UX',
+  //   'D3.js',
+  //   'IoT',
+  //   'ML',
+  //   'Embedded',
+  //   'Blockchain',
+  //   'Security',
+  //   'Web3',
+  //   'CTD',
+  //   'Web Dev',
+  //   'Mobile Dev',
+  //   'DevOps',
+  //   'Cloud',
+  //   'Database'
+  //];
+  const handleSkillsChange = (selectedOptions) => {
+    const selectedSkills = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setFormData((prevData) => ({
+      ...prevData,
+      skills: selectedSkills,
+    }));
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +92,7 @@ const EditProfile = () => {
         username: formData.username,
         email: formData.email,
         bio: formData.bio,
-        skills: formData.skills.split(',').map(skill => skill.trim()),
+        skills: formData.skills,
       };
 
 
@@ -142,21 +194,18 @@ const EditProfile = () => {
 
           </div>
 
-          {/* Skills Section */}
-          <div className="col-span-full">
-            <label htmlFor="skills" className="block text-sm font-medium text-gray-900">Skills</label>
-            <div className="mt-2">
-              <textarea
-                name="skills"
-                id="skills"
-                rows="3"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
-                value={formData.skills}
-                onChange={handleChange}
-                placeholder='Impress your teammates with your skills'
-              />
-            </div>
 
+          {/* Skills*/}
+          <div className="col-span-full">
+            <label className="block text-sm font-medium text-gray-900">Skills</label>
+            <Select
+              isMulti
+              options={skillOptions}
+              value={skillOptions.filter(option => formData.skills.includes(option.value))}
+              onChange={handleSkillsChange}
+              className="mt-1"
+              placeholder="Select your skills..."
+            />
           </div>
 
           {/* Profile Photo */}
