@@ -26,8 +26,8 @@ const EditProfile = () => {
       try {
         const response = await codeCrewAPI.getAllSkills();
         const options = response.data.data.skills.map(skill => ({
-          value: skill.name,
-          label: skill.name
+          value: skill,
+          label: skill
         }));
         setSkillOptions(options);
 
@@ -36,30 +36,9 @@ const EditProfile = () => {
       }
     };
     fetchSkills();
-  }), [];
+  }, []);
 
-  // const skillOptions = [
-  //   'React',
-  //   'JavaScript',
-  //   'Python',
-  //   'Node.js',
-  //   'HTML/CSS',
-  //   'Data Science',
-  //   'UI/UX',
-  //   'D3.js',
-  //   'IoT',
-  //   'ML',
-  //   'Embedded',
-  //   'Blockchain',
-  //   'Security',
-  //   'Web3',
-  //   'CTD',
-  //   'Web Dev',
-  //   'Mobile Dev',
-  //   'DevOps',
-  //   'Cloud',
-  //   'Database'
-  //];
+
   const handleSkillsChange = (selectedOptions) => {
     const selectedSkills = selectedOptions ? selectedOptions.map(option => option.value) : [];
     setFormData((prevData) => ({
