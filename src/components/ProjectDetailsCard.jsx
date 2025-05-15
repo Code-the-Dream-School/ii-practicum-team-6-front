@@ -56,13 +56,13 @@ const ProjectDetailsCard = ({project}) => {
                     ({project.teamMembers.length}):</h4>
                 <div className="space-y-2">
                     {project.teamMembers.map((member) => (
-                        <div key={member._id} className="flex items-center justify-between">
+                        <div key={member.id} className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <div
                                     className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2">
-                                    {member.user.charAt(0)}
+                                    {member.username.charAt(0)}
                                 </div>
-                                <span className="text-sm text-gray-800">{member.user}</span>
+                                <span className="text-sm text-gray-800">{member.username}</span>
                             </div>
                             <span
                                 className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs capitalize">{member.role}</span>

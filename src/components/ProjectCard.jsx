@@ -33,12 +33,12 @@ const ProjectCard = ({project, onLike, onClick}) => {
         <p className="text-gray-600 mb-4 text-sm line-clamp-2">{description}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
-            {tags.map(tag => (
+            {tags.map((tag, id) => (
               <span
-                  key={tag._id}
+                  key={id}
                   className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs"
                   onClick={(e) => e.stopPropagation()}>
-                  {tag.name}
+                  {tag}
               </span>
             ))}
         </div>
