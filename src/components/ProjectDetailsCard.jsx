@@ -1,4 +1,6 @@
 import React from 'react';
+import RequestJoin from './RequestJoin';
+import {useUser} from '../context/UserContext';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -6,6 +8,7 @@ const formatDate = (dateString) => {
 };
 
 const ProjectDetailsCard = ({project}) => {
+    const {user} = useUser();
     const teamFilled = project.teamMembers.length / project.reqSpots * 100;
     return (
 
@@ -48,7 +51,7 @@ const ProjectDetailsCard = ({project}) => {
                     ></div>
                 </div>
             </div>
-            <div className="mt-4 pt-4  border-gray-200">
+            <div className="mt-4 pt-4 border-gray-200">
                 <h4 className="text-sm font-medium text-gray-700 mb-2">Team Members
                     ({project.teamMembers.length}):</h4>
                 <div className="space-y-2">
@@ -68,6 +71,9 @@ const ProjectDetailsCard = ({project}) => {
                 </div>
             </div>
 
+            {user && !project.teamMembers.some(member => member.user === user.id) && (
+                <RequestJoin projectId={project._id}/>
+            )}
         </div>
 
     );
