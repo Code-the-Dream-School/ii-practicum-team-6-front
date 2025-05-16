@@ -5,7 +5,7 @@ import codeCrewAPI from '../config';
 import IsLoading from './IsLoading';
 import ShowError from './ShowError';
 
-const RequestJoin = ({projectId}) => {
+const RequestJoin = ({projectId, project}) => {
     const {user} = useUser();
     const [joinMessage, setJoinMessage] = useState('');
     const [showJoinForm, setShowJoinForm] = useState(false);
@@ -15,6 +15,20 @@ const RequestJoin = ({projectId}) => {
     const [requestSent, setRequestSent] = useState(false);
     const [currentRequest, setCurrentRequest] = useState(null);
     const [requestWithdrawn, setRequestWithdrawn] = useState(false);
+
+    // Return null if user is not logged in or is already a team member
+    if (!user)
+        return (
+            <div className="text-center">
+                <Link to="/register"
+                      className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                    Register to join a project
+                </Link>
+            </div>
+        );
+    else if (project && project.teamMembers.some(member => member.id === user.id)) {
+        return null;
+    }
 
     useEffect(() => {
         const fetchProjectRequests = async () => {

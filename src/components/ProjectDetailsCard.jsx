@@ -1,7 +1,6 @@
 import React from 'react';
 import RequestJoin from './RequestJoin';
 import ReviewRequests from './ReviewRequests';
-import {useUser} from '../context/UserContext';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -9,7 +8,6 @@ const formatDate = (dateString) => {
 };
 
 const ProjectDetailsCard = ({project}) => {
-    const {user} = useUser();
     const teamFilled = project.teamMembers.length / project.reqSpots * 100;
     return (
 
@@ -72,9 +70,7 @@ const ProjectDetailsCard = ({project}) => {
                 </div>
             </div>
 
-            {user && !project.teamMembers.some(member => member.id === user.id) && (
-                <RequestJoin projectId={project._id}/>
-            )}
+            <RequestJoin projectId={project._id} project={project}/>
 
             <ReviewRequests project={project}/>
         </div>

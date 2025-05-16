@@ -77,7 +77,7 @@ const ReviewRequests = ({ project }) => {
     if (!isAdmin) {
         return null;
     }
-console.log(joinRequests);
+
     return (
         <div className="mt-4 border-t border-gray-200">
             {isLoading && <IsLoading message={"Loading join requests..."} />}
