@@ -73,8 +73,7 @@ const ReviewRequests = ({ project }) => {
             setIsLoading(false);
         }
     };
-
-    // If user is not an admin, don't render anything
+    
     if (!isAdmin) {
         return null;
     }
