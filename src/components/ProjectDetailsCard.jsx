@@ -1,5 +1,6 @@
 import React from 'react';
 import RequestJoin from './RequestJoin';
+import ReviewRequests from './ReviewRequests';
 import {useUser} from '../context/UserContext';
 
 const formatDate = (dateString) => {
@@ -60,7 +61,7 @@ const ProjectDetailsCard = ({project}) => {
                             <div className="flex items-center">
                                 <div
                                     className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2">
-                                    {member.username.charAt(0)}
+                                    {member.username.charAt(0).toUpperCase()}
                                 </div>
                                 <span className="text-sm text-gray-800">{member.username}</span>
                             </div>
@@ -71,9 +72,11 @@ const ProjectDetailsCard = ({project}) => {
                 </div>
             </div>
 
-            {user && !project.teamMembers.some(member => member.user === user.id) && (
+            {user && !project.teamMembers.some(member => member.id === user.id) && (
                 <RequestJoin projectId={project._id}/>
             )}
+
+            <ReviewRequests project={project}/>
         </div>
 
     );
