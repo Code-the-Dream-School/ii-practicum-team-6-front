@@ -17,7 +17,6 @@ const useProject = (projectId) => {
       setIsLoading(true);
       try {
         const {data} = await codeCrewAPI.getProject(projectId);
-        console.log(data.data.project);
         setProject(data?.data?.project || null);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch project details');

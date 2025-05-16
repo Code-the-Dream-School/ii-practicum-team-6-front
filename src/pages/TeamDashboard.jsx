@@ -1,38 +1,75 @@
 import React, {useState, useEffect} from 'react';
 import {useUser} from "../context/UserContext";
 import ProjectDetailsCard from '../components/ProjectDetailsCard';
-import useProjects from '../hooks/useProjects';
 import IsLoading from '../components/IsLoading';
 import ShowError from '../components/ShowError.jsx';
 import {Link} from 'react-router-dom';
+import codeCrewAPI from '../config.js';
 
 
 function TeamDashboard() {
     const [activeTab, setActiveTab] = useState('created');
     const {user} = useUser();
-    //Hardcoded, waiting for endpoints for Created/Joined Projects
-    const {projects, isLoading, error} = useProjects({
-        limit: 36,
-        page: 1,
-    });
     const [createdProjects, setCreatedProjects] = useState([]);
     const [joinedProjects, setJoinedProjects] = useState([]);
-    //Hardcoded, waiting for endpoints for Created/Joined Projects
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
-        if (user && projects.length > 0) {
-            const created = projects.filter(project =>
-                project.createdBy === user?.id
-            );
+        const fetchProjects = async () => {
+            setIsLoading(true);
+            try {
+                const createdResponse = await codeCrewAPI.getMyCreatedProjects({
+                    limit: 36,
+                    page: 1,
+                });
+                const createdProjectsData = createdResponse.data?.data?.projects || [];
+                setCreatedProjects(Object.values(createdProjectsData));
+            } catch (err) {
+                if (!(["No data found", "No projects"].includes(err.response?.data?.message))) {
+                    console.error('Error fetching projects:', err);
+                    setError(err.response?.data?.message || 'Failed to fetch projects');
+                }
+            } finally {
+                setIsLoading(false);
+            }
+            try {
+                const joinedResponse = await codeCrewAPI.getMyProjectRequests({
+                    limit: 36,
+                    page: 1,
+                });
+                const projectRequests = joinedResponse.data?.data?.projects || [];
 
-            const joined = projects.filter(project =>
-                project.createdBy !== user?.id &&
-                project.teamMembers?.some(member => member.user === user?._id)
-            );
+                const joinedProjectsData = [];
+                for (const request of projectRequests) {
+                    try {
+                        const projectResponse = await codeCrewAPI.getProject(request.projectId);
+                        const projectData = projectResponse.data?.data?.project;
+                        if (projectData) {
+                            projectData.requestData = request;
+                            joinedProjectsData.push(projectData);
+                        }
+                    } catch (projectErr) {
+                        console.error(`Error fetching project ${request.projectId}:`, projectErr);
+                    }
+                }
 
-            setCreatedProjects(created);
-            setJoinedProjects(joined);
+                setJoinedProjects(joinedProjectsData);
+            } catch (err) {
+                if (!(["No data found", "No projects"].includes(err.response?.data?.message))) {
+                    console.error('Error fetching projects:', err);
+                    setError(err.response?.data?.message || 'Failed to fetch projects');
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (user) {
+            fetchProjects();
         }
-    }, [user, projects]);
+    }, [user]);
+
 
     return (
         <div className="min-h-screen bg-gray-100 ">

@@ -49,7 +49,42 @@ const codeCrewAPI = {
   createProject(data) {
     return instance.post('/projects', data);
   },
-
+  updateProject(id, data) {
+    return instance.patch(`/projects/${id}`, data);
+  },
+  deleteProject(id) {
+    return instance.delete(`/projects/${id}`);
+  },
+  leaveProject(id) {
+    return instance.post(`/projects/${id}/leave`);
+  },
+  toggleVote(id) {
+    return instance.post(`/projects/${id}/votes`);
+  },
+  getAllVotes(id) {
+    return instance.get(`/projects/${id}/votes`);
+  },
+  sendJoinRequest(id, data) {
+    return instance.post(`/projects/${id}/join-requests`, data);
+  },
+  getProjectJoinRequests(id) {
+    return instance.get(`/projects/${id}/join-requests`);
+  },
+  unsendJoinRequest(id, data) {
+    return instance.delete(`/projects/${id}/join-requests`, {data});
+  },
+  reviewJoinRequest(id, requestId, data) {
+    return instance.patch(`/projects/${id}/join-requests/${requestId}`, data);
+  },
+  getMyProjects(params) {
+    return instance.get('/projects/myProjects', {params});
+  },
+  getMyProjectRequests(params) {
+    return instance.get('/projects/myProjectRequests', {params});
+  },
+  getMyCreatedProjects(params) {
+    return instance.get('/projects/myCreatedProjects', {params});
+  },
 };
 
 export default codeCrewAPI;

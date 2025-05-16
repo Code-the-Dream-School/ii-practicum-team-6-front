@@ -1,4 +1,6 @@
 import React from 'react';
+import RequestJoin from './RequestJoin';
+import ReviewRequests from './ReviewRequests';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -48,7 +50,7 @@ const ProjectDetailsCard = ({project}) => {
                     ></div>
                 </div>
             </div>
-            <div className="mt-4 pt-4  border-gray-200">
+            <div className="mt-4 pt-4 border-gray-200">
                 <h4 className="text-sm font-medium text-gray-700 mb-2">Team Members
                     ({project.teamMembers.length}):</h4>
                 <div className="space-y-2">
@@ -57,7 +59,7 @@ const ProjectDetailsCard = ({project}) => {
                             <div className="flex items-center">
                                 <div
                                     className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2">
-                                    {member.username.charAt(0)}
+                                    {member.username.charAt(0).toUpperCase()}
                                 </div>
                                 <span className="text-sm text-gray-800">{member.username}</span>
                             </div>
@@ -68,6 +70,9 @@ const ProjectDetailsCard = ({project}) => {
                 </div>
             </div>
 
+            <RequestJoin projectId={project._id} project={project}/>
+
+            <ReviewRequests project={project}/>
         </div>
 
     );
