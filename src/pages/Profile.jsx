@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import codeCrewAPI from '../config';
 
 const Profile = () => {
-  const { user, updateUser } = useUser();
+  const { user, setUser } = useUser();
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
   if (!user) {
@@ -25,6 +26,37 @@ const Profile = () => {
   } = user;
 
 
+  const setAvatar = async (data) => {
+    try {
+
+      const formData = new FormData();
+      formData.append('avatar', data);
+      const res = await codeCrewAPI.uploadAvatar(formData);
+      const newAvatarUrl = res.data.data.avatarUrl;
+
+      setUser(user => ({
+        ...user,
+        avatar: {
+          ...user.avatar,
+          url: newAvatarUrl
+        }
+      }));
+
+    }
+    catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.click();
+  };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setAvatar(file);
+  };
+
   //Normalize skills data
   const skills = Array.isArray(userSkills)
     ? userSkills.map(skill => skill.name || String(skill).trim()).filter(Boolean)
@@ -42,22 +74,38 @@ const Profile = () => {
 
           <div className="md:w-1/3 text-center mb-8 md:mb-0">
             {/* Generic Avatar Icon */}
-            <div className="mx-auto mb-4 flex items-center justify-center w-48 h-48 rounded-full bg-indigo-100 dark:bg-gray-700 border-4 border-indigo-800 dark:border-blue-900">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-32 w-32 text-indigo-800 dark:text-blue-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            <div className="mx-auto mb-4 flex items-center justify-center w-48 h-48 rounded-full bg-indigo-100 dark:bg-gray-700 border-4 border-indigo-800 dark:border-blue-900"
+              onClick={handleAvatarClick}>
+              {avatar.url ? (
+                <img
+                  src={avatar.url}
+                  alt="User avatar"
+                  className="h-46 w-46 rounded-full object-cover"
                 />
-              </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-32 w-32 text-indigo-800 dark:text-blue-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              )}
             </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
 
             <p className="text-gray-600 dark:text-gray-300 mb-4">{username}</p>
             <button
