@@ -20,8 +20,8 @@ const BrowseProjects = () => {
     page: 1,
     skills: selectedSkills.length > 0 ? selectedSkills.map(skill => skill.value) : undefined,
     sort: sortBy.value,
-    search: searchQuery || undefined,
-  }), [selectedSkills, sortBy.value, searchQuery]);
+    search: (searchQuery && searchQuery.length >= 4) ? searchQuery : undefined,
+  }), [selectedSkills, sortBy.value, searchQuery && searchQuery.length >= 4 ? searchQuery : null]);
 
   const {projects, setProjects, isLoading: projectsLoading, error: projectsError} = useProjects(projectParams);
   const {formattedSkillOptions, isLoading: skillsLoading, loadError} = useLoadSkills();
@@ -62,7 +62,7 @@ const BrowseProjects = () => {
   };
 
   // Check if any filters are active
-  const hasActiveFilters = searchQuery || selectedSkills.length > 0 || sortBy.value !== DEFAULT_SORT.value;
+  const hasActiveFilters = (searchQuery && searchQuery.length >= 4) || selectedSkills.length > 0 || sortBy.value !== DEFAULT_SORT.value;
 
 
   if (projectsError || loadError) {
@@ -94,13 +94,20 @@ const BrowseProjects = () => {
             )}
           </div>
 
-          <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="relative">
+            <input
+                type="text"
+                placeholder="Search projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {searchQuery && searchQuery.length > 0 && searchQuery.length < 4 && (
+                <div className="absolute right-0 top-0 h-full flex items-center pr-3">
+                  <span className="text-xs text-gray-500">Enter at least 4 characters to search</span>
+                </div>
+            )}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
