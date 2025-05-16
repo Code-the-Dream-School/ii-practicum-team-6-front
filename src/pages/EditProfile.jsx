@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import codeCrewAPI from '../config';
 import { useUser } from '../context/UserContext';
 import Select from 'react-select';
+import useLoadSkills from '../hooks/useLoadSkills';
 
 
 const EditProfile = () => {
@@ -19,24 +20,7 @@ const EditProfile = () => {
   });
   console.log('skills:', user.skills);
 
-  const [skillOptions, setSkillOptions] = useState([]);
-
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await codeCrewAPI.getAllSkills();
-        const options = response.data.data.skills.map(skill => ({
-          value: skill,
-          label: skill
-        }));
-        setSkillOptions(options);
-
-      } catch (error) {
-        console.error('Error fetching skills:', error);
-      }
-    };
-    fetchSkills();
-  }, []);
+  const { formattedSkillOptions, isLoading } = useLoadSkills();
 
 
   const handleSkillsChange = (selectedOptions) => {
@@ -186,11 +170,13 @@ const EditProfile = () => {
             </label>
             <Select
               isMulti
-              options={skillOptions}
-              value={skillOptions.filter(option => formData.skills.includes(option.value))}
+              options={formattedSkillOptions}
+              value={formattedSkillOptions.filter(option => formData.skills.includes(option.value))}
               onChange={handleSkillsChange}
               classNamePrefix="select"
-              placeholder="Select your skills..."
+              placeholder={isLoading ? "Loading skills..." : "Select your skills..."}
+              isDisabled={isLoading}
+              isLoading={isLoading}
               styles={{
                 control: (base) => ({
                   ...base,
