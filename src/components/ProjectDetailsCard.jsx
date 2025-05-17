@@ -38,7 +38,7 @@ const ProjectDetailsCard = ({project}) => {
                         {project.reqSkills.map((skill,id) => (
                             <span
                                 key={id}
-                                className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs"
+                                className="bg-slate-600 text-white px-3 py-1 rounded-full text-xs"
                             >
                                        {skill}
                                  </span>
@@ -54,7 +54,7 @@ const ProjectDetailsCard = ({project}) => {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                        className="bg-blue-600 h-2 rounded-full"
+                        className="bg-emerald-200 h-2 rounded-full"
                         style={{width: `${teamFilled}%`}}
                     ></div>
                 </div>
