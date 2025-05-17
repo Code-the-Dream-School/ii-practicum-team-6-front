@@ -5,7 +5,6 @@ const ProjectCard = ({project, onClick, onSkillClick}) => {
   const title = project.title;
   const description = project.description;
     const likes = project.likes.length || 0;
-  const liked = project.liked || false;
   const tags = project.reqSkills || [];
   const teamSize = project.reqSpots || 0;
   const contributors = project.teamMembers?.length || 0;
@@ -18,7 +17,7 @@ const ProjectCard = ({project, onClick, onSkillClick}) => {
           <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
             <LikeButton
                 projectId={id}
-                initialLiked={liked}
+                likes={project.likes || []}
                 initialLikesCount={likes}
             />
         </div>

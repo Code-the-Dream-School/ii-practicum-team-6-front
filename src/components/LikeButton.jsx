@@ -1,10 +1,20 @@
-import { CiHeart } from "react-icons/ci";
-import { useState } from 'react';
+import {HiHeart} from "react-icons/hi";
+import {useState, useEffect} from 'react';
 import codeCrewAPI from '../config.js';
+import {useUser} from '../context/UserContext';
 
-const LikeButton = ({ projectId, initialLiked = false, initialLikesCount = 0 }) => {
-  const [liked, setLiked] = useState(initialLiked);
+const LikeButton = ({projectId, initialLikesCount = 0, likes = []}) => {
+  const {user} = useUser();
+  const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikesCount);
+
+  useEffect(() => {
+    if (user && likes.includes(user.id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [user, likes]);
 
   const handleLike = async (e) => {
     e.stopPropagation();
@@ -25,7 +35,7 @@ const LikeButton = ({ projectId, initialLiked = false, initialLikesCount = 0 }) 
       onClick={handleLike}
       className="text-gray-400 hover:text-red-500 transition-colors flex items-center"
     >
-      <CiHeart
+      <HiHeart
         className={`h-5 w-5 ${liked ? 'text-red-500' : 'text-gray-400'}`}
         style={{fill: liked ? '#ef4444' : '#9ca3af', stroke: liked ? '#ef4444' : '#9ca3af'}}
       />
