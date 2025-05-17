@@ -1,6 +1,6 @@
 import { CiHeart } from "react-icons/ci";
 
-const ProjectCard = ({project, onLike, onClick}) => {
+const ProjectCard = ({project, onLike, onClick, onSkillClick}) => {
   const id = project._id;
   const title = project.title;
   const description = project.description;
@@ -33,12 +33,15 @@ const ProjectCard = ({project, onLike, onClick}) => {
         <p className="text-gray-600 mb-4 text-sm line-clamp-2">{description}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
-            {tags.map(tag => (
+            {tags.map((tag, id) => (
               <span
-                  key={tag._id}
-                  className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs"
-                  onClick={(e) => e.stopPropagation()}>
-                  {tag.name}
+                  key={id}
+                  className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-gray-200"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onSkillClick) onSkillClick(tag);
+                  }}>
+                  {tag}
               </span>
             ))}
         </div>

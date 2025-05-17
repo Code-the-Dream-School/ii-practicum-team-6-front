@@ -68,8 +68,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-screen flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
+    <div className="bg-gray-100 min-h-[80vh] flex items-center justify-center pt-12 p-4">
+      <div className="bg-white  rounded-xl shadow-md max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in border border-gray-200 relative -mt-55">
         <div className="flex flex-col md:flex-row w-full">
 
           <div className="md:w-1/3 text-center mb-8 md:mb-0">
@@ -110,40 +110,40 @@ const Profile = () => {
             <p className="text-gray-600 dark:text-gray-300 mb-4">{username}</p>
             <button
               onClick={handleEditProfile}
-              className="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300"
+              className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-300"
             >
               Edit Profile
             </button>
           </div>
 
           <div className="md:w-2/3 md:pl-8">
-            <h2 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
               About Me
             </h2>
             <p className="text-gray-700 dark:text-gray-300 mb-6 whitespace-pre-wrap">
               {bio}
             </p>
 
-            <h2 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
               Skills
             </h2>
             <div className="flex flex-wrap gap-2 mb-6">
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm hover:bg-blue-900 hover:text-white transition-all duration-300"
+                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm hover:bg-gray-900 hover:text-white transition-all duration-300"
                 >
                   {skill}
                 </span>
               ))}
             </div>
-            <h2 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
               Contact Information
             </h2>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
               <li className="flex items-center">
                 <svg
-                  className="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900"
+                  className="h-5 w-5 mr-2 text-gray-800 dark:text-gray-900"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >

@@ -24,7 +24,7 @@ const useProjects = (params = {}) => {
             }
         };
         fetchProjects();
-    }, []);
+    }, [params]);
 
     return {projects, setProjects, isLoading, error};
 };
