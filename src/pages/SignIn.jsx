@@ -40,13 +40,19 @@ const SignIn = () => {
         localStorage.setItem('user', JSON.stringify(user));
         navigate('/');
       } else {
-        throw new Error(body.message || 'Login Failed');
+        throw new Error('Login Failed');
       }
     } catch (err) {
       console.error('Login error:', err.message);
-      setError(err.message);
+
+      if (err.response && err.response.status === 401) {
+        setError('Wrong email or password. Please try again.');
+      } else {
+        setError(err.message || 'Login failed. Please try again.');
+      }
     }
   };
+
 
 
   return (
@@ -54,6 +60,13 @@ const SignIn = () => {
       <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-2xl font-medium text-gray-900 text-center">Sign in</h5>
+
+          {error && (
+            <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-md text-center">
+              {error}
+            </div>
+          )}
+
 
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">
