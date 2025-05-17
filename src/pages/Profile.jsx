@@ -36,8 +36,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-      <div className="bg-white  rounded-xl shadow-md max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in border border-gary-200">
+    <div className="bg-gray-100 min-h-[80vh] flex items-center justify-center pt-12 p-4">
+      <div className="bg-white  rounded-xl shadow-md max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in border border-gray-200 relative -mt-55">
         <div className="flex flex-col md:flex-row w-full">
 
           <div className="md:w-1/3 text-center mb-8 md:mb-0">
