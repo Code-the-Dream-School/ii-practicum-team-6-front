@@ -38,15 +38,6 @@ const useFeaturedProjects = () => {
 const FeaturedProjects = () => {
   const {projects, setProjects, isLoading, error} = useFeaturedProjects();
 
-    const handleLike = (id) => {
-      setProjects(projects.map(project =>
-          project._id === id ? {
-            ...project,
-            liked: !project.liked,
-            likes: project.liked ? project.likes - 1 : project.likes + 1
-          } : project
-      ));
-    };
 
     const navigate = useNavigate();
     const handleCardClick = (id) => {
@@ -88,7 +79,6 @@ const FeaturedProjects = () => {
                 >
                   <ProjectCard
                     project={project}
-                    onLike={handleLike}
                     onClick={handleCardClick}
                   />
                 </div>

@@ -3,7 +3,9 @@ import {useUser} from '../context/UserContext';
 import codeCrewAPI from '../config';
 import RequestJoin from './RequestJoin';
 import ReviewRequests from './ReviewRequests';
+import LikeButton from './LikeButton';
 import ShowError from './ShowError';
+
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,11 +38,17 @@ const ProjectDetailsCard = ({project}) => {
             <div className="flex justify-between items-start mb-4">
                 <div>
                     <h3 className="text-xl font-bold text-gray-800">{project.title}</h3>
+                    <span className="text-sm text-gray-500">Created {formatDate(project.createdAt)}</span>
                     <p className="text-gray-600 mt-1">{project.description}</p>
                 </div>
                 <div className="flex flex-col items-end">
-                    <span
-                        className="whitespace-nowrap text-sm text-gray-500">Created {formatDate(project.createdAt)}</span>
+                    <div className="mt-2">
+                        <LikeButton
+                            projectId={project._id}
+                            initialLikesCount={project.likes ? project.likes.length : 0}
+                            likes={project.likes || []}
+                        />
+                    </div>
                 </div>
             </div>
 

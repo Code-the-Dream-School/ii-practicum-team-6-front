@@ -73,7 +73,7 @@ const ReviewRequests = ({ project }) => {
             setIsLoading(false);
         }
     };
-    
+
     if (!isAdmin) {
         return null;
     }
@@ -88,13 +88,13 @@ const ReviewRequests = ({ project }) => {
                 </div>
             )}
 
-            {!isLoading && joinRequests.length === 0 ? (
+            {!isLoading && joinRequests.filter(request => request.status === "pending" || request.status === "declined").length === 0 ? (
                 <p className="mt-4 text-sm text-gray-600">No join requests.</p>
             ) : (
                 <>
                     <h4 className="mt-4 text-sm font-medium text-gray-700 mb-2">Join Requests:</h4>
                     <div className="space-y-3">
-                        {joinRequests.map((request) => (
+                        {joinRequests.filter(request => request.status === "pending" || request.status === "declined").map((request) => (
                             <div key={request._id} className="bg-gray-50 p-3 rounded">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center">

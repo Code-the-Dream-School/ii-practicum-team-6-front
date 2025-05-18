@@ -1,11 +1,10 @@
-import { CiHeart } from "react-icons/ci";
+import LikeButton from './LikeButton';
 
-const ProjectCard = ({project, onLike, onClick, onSkillClick}) => {
+const ProjectCard = ({project, onClick, onSkillClick}) => {
   const id = project._id;
   const title = project.title;
   const description = project.description;
-  const likes = project.likesCount || 0;
-  const liked = project.liked || false;
+    const likes = project.likes.length || 0;
   const tags = project.reqSkills || [];
   const teamSize = project.reqSpots || 0;
   const contributors = project.teamMembers?.length || 0;
@@ -16,18 +15,11 @@ const ProjectCard = ({project, onLike, onClick, onSkillClick}) => {
           onClick={() => onClick(id)}>
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
-          <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onLike(id);
-              }}
-              className="text-gray-400 hover:text-red-500 transition-colors flex items-center">
-            <CiHeart
-                className={`h-5 w-5 ${liked ? 'text-red-500' : 'text-gray-400'}`}
-                style={{fill: liked ? '#ef4444' : '#9ca3af', stroke: liked ? '#ef4444' : '#9ca3af'}}
+            <LikeButton
+                projectId={id}
+                likes={project.likes || []}
+                initialLikesCount={likes}
             />
-            <span className="ml-1 text-sm">{likes}</span>
-          </button>
         </div>
 
         <p className="text-gray-600 mb-4 text-sm line-clamp-2">{description}</p>

@@ -39,15 +39,6 @@ const BrowseProjects = () => {
     setSortBy(DEFAULT_SORT);
   };
 
-  const handleLike = (id) => {
-    setProjects(projects.map(project =>
-        project._id === id ? {
-          ...project,
-          liked: !project.liked,
-          likes: project.liked ? project.likes - 1 : project.likes + 1
-        } : project
-    ));
-  };
 
   const handleCardClick = (id) => {
     navigate(`/projects/${id}`);
@@ -160,7 +151,6 @@ const BrowseProjects = () => {
                       <div key={project._id}>
                         <ProjectCard
                             project={project}
-                            onLike={handleLike}
                             onClick={handleCardClick}
                             onSkillClick={handleSkillClick}
                         />
