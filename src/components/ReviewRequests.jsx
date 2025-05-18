@@ -89,7 +89,7 @@ const ReviewRequests = ({ project }) => {
             )}
 
             {!isLoading && joinRequests.length === 0 ? (
-                <p className="text-sm text-gray-600">No join requests.</p>
+                <p className="mt-4 text-sm text-gray-600">No join requests.</p>
             ) : (
                 <>
                     <h4 className="mt-4 text-sm font-medium text-gray-700 mb-2">Join Requests:</h4>
