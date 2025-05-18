@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Select from 'react-select';
 import codeCrewAPI from "../config.js";
 import {useNavigate} from 'react-router-dom';
+import ShowError from '../components/ShowError';
+import useLoadSkills from '../hooks/useLoadSkills';
 
 const SubmitProject = () => {
   const navigate = useNavigate();
@@ -14,30 +16,7 @@ const SubmitProject = () => {
 
   const [errors, setErrors] = useState({});
   const [showPreview, setShowPreview] = useState(false);
-
-  // Using hardcoded skills for now, will need skills API from backend team
-  const skillOptions = [
-    'React',
-    'JavaScript',
-    'Python',
-    'Node.js',
-    'HTML/CSS',
-    'Data Science',
-    'UI/UX',
-    'D3.js',
-    'IoT',
-    'ML',
-    'Embedded',
-    'Blockchain',
-    'Security',
-    'Web3',
-    'CTD',
-    'Web Dev',
-    'Mobile Dev',
-    'DevOps',
-    'Cloud',
-    'Database'
-  ];
+  const {formattedSkillOptions, isLoading, loadError} = useLoadSkills();
 
 
   const handleInputChange = (e) => {
@@ -163,14 +142,17 @@ const SubmitProject = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Required Skills <span className="text-red-500">*</span>
                 </label>
+                {loadError && <ShowError error={loadError}/>}
                 <Select
                     isMulti
                     name="skills"
-                    options={skillOptions.map(skill => ({value: skill, label: skill}))}
+                    options={formattedSkillOptions}
                     classNamePrefix="select"
-                    placeholder="Select required skills"
+                    placeholder={isLoading ? "Loading skills..." : "Select required skills"}
                     value={formData.skills.map(skill => ({value: skill, label: skill}))}
                     onChange={handleSkillsChange}
+                    isDisabled={isLoading}
+                    isLoading={isLoading}
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -184,7 +166,7 @@ const SubmitProject = () => {
                 />
                 {errors.skills && <p className="mt-1 text-sm text-red-500">{errors.skills}</p>}
                 <p className="mt-1 text-sm text-gray-500">
-                  Selected: {formData.skills.length} / {skillOptions.length}
+                  Selected: {formData.skills.length} / {formattedSkillOptions.length}
                 </p>
               </div>
 
