@@ -98,8 +98,17 @@ const ReviewRequests = ({ project }) => {
                             <div key={request._id} className="bg-gray-50 p-3 rounded">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center">
-                                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2">
-                                            {request.username.charAt(0).toUpperCase()}
+                                        <div
+                                            className="w-8 h-8 bg-[#d4dfbd] rounded-full flex items-center justify-center mr-2">
+                                            {request.avatar ? (
+                                                <img
+                                                    src={request.avatar}
+                                                    alt={`${request.username}'s avatar`}
+                                                    className="w-8 h-8 rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                request.username.charAt(0).toUpperCase()
+                                            )}
                                         </div>
                                         <span className="text-sm font-medium">{request.username}</span>
                                     </div>

@@ -28,7 +28,7 @@ const ProjectCard = ({project, onClick, onSkillClick}) => {
             {tags.map((tag, id) => (
               <span
                   key={id}
-                  className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-gray-200"
+                  className="bg-slate-600 text-white  px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-slate-400"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (onSkillClick) onSkillClick(tag);
