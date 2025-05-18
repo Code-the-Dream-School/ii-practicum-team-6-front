@@ -4,23 +4,20 @@ export const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL || 'http://localhost:3000/api',
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    //'Content-Type': 'application/json',
     'Accept': 'application/json'
   }
 });
 
 const codeCrewAPI = {
-  updateUser(data){
-  return instance.patch('/users/me', data);
+  updateUser(data) {
+    return instance.patch('/users/me', data);
   },
 
   getAllSkills() {
     return instance.get('/skills');
   },
 
-  // searchSkills(searchBody) {
-  //   return instance.post('/skills/search', { searchBody});
-  // },
 
   register(data) {
     return instance.post('/auth/register', data);
@@ -85,6 +82,9 @@ const codeCrewAPI = {
   getMyCreatedProjects(params) {
     return instance.get('/projects/myCreatedProjects', {params});
   },
+  uploadAvatar(data) {
+    return instance.post('/users/avatar', data);
+  }
 };
 
 export default codeCrewAPI;
