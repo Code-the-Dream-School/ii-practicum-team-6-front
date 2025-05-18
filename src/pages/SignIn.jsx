@@ -20,40 +20,19 @@ const SignIn = () => {
 
     try {
       const response = await codeCrewAPI.login({ email, password });
+const { data } = response.data;
 
-      const body = response.data;
-      console.log('Body:', body);
-
-
-      if (!body.success) {
-        throw new Error(body.message || 'Login Failed');
-      };
-
-
-      const data = body.data;
-      console.log('data:', data);
-      const user = body.data.user;
-      console.log('user:', user);
-
-      if (user) {
-        setUser(user);
-        localStorage.setItem('user', JSON.stringify(user));
-        navigate('/');
-      } else {
-        throw new Error('Login Failed');
-      }
-    } catch (err) {
-      console.error('Login error:', err.message);
-
-      if (err.response && err.response.status === 401) {
-        setError('Wrong email or password. Please try again.');
-      } else {
-        setError(err.message || 'Login failed. Please try again.');
-      }
-    }
-  };
-
-
+if (data && data.user) {
+  setUser(data.user);
+  localStorage.setItem('user',JSON.stringify(data.user));
+  navigate('/');
+}else{
+  setError("Something went wrong.Try again in a bit - we're fixing it!")
+}
+}catch (err) {
+  setError('That didnt work. Double-check your login info and give it another go!');
+}
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen  px-4">
