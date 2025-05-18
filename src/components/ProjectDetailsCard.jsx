@@ -88,13 +88,21 @@ const ProjectDetailsCard = ({project}) => {
                         <div key={member.id} className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <div
-                                    className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2">
-                                    {member.username.charAt(0).toUpperCase()}
+                                    className="w-8 h-8 bg-[#d4dfbd] rounded-full flex items-center justify-center mr-2">
+                                    {member.avatar ? (
+                                        <img
+                                            src={member.avatar}
+                                            alt={`${member.username}'s avatar`}
+                                            className="w-8 h-8 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        member.username.charAt(0).toUpperCase()
+                                    )}
                                 </div>
                                 <span className="text-sm text-gray-800">{member.username}</span>
                             </div>
                             <span
-                                className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs capitalize">{member.role}</span>
+                                className={`${member.role === 'admin' ? 'bg-[#dfbdd4]' : 'bg-[#bdd4df]'} text-gray-600 px-3 py-1 rounded-full text-xs capitalize`}>{member.role}</span>
                         </div>
                     ))}
                 </div>

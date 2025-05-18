@@ -6,10 +6,10 @@ import codeCrewAPI from '../config';
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { setUser } = useUser();
+  const {user, setUser} = useUser();
   const navigate = useNavigate();
 
-  
+
   const handleLogout = async () => {
     try {
       await codeCrewAPI.logOut();
@@ -50,20 +50,26 @@ const UserDropdown = () => {
           onClick={() => setIsOpen(!isOpen)}
           className="inline-flex items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 hover:bg-gray-50"
         >
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            className="h-6 w-6 text-gray-600"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12 14a7 7 0 100-14 7 7 0 000 14zm0 2c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
-              clipRule="evenodd"
-            />
-          </svg>
-
+          {user && user.avatar && user.avatar.url ? (
+              <img
+                  src={user.avatar.url}
+                  alt="User avatar"
+                  className="h-6 w-6 rounded-full object-cover"
+              />
+          ) : (
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  className="h-6 w-6 text-gray-600"
+              >
+                <path
+                    fillRule="evenodd"
+                    d="M12 14a7 7 0 100-14 7 7 0 000 14zm0 2c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
+                    clipRule="evenodd"
+                />
+              </svg>
+          )}
         </button>
       </div>
       {isOpen && (

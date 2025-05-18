@@ -88,11 +88,11 @@ const EditProfile = () => {
 
       <form onSubmit={handleSubmit} className="bg-white shadow-sm rounded-lg p-6 border border-gray-200">
         {/* Personal Information Section */}
-        <div className="mb-8 pb-8 border-b border-gray-200">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="mb-6">
+            <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
                 Username
               </label>
@@ -107,7 +107,7 @@ const EditProfile = () => {
               />
             </div>
 
-            <div className="mb-6">
+            <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
@@ -121,7 +121,7 @@ const EditProfile = () => {
               />
             </div>
 
-            <div className="mb-6">
+            <div>
               <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
                 Country
               </label>
@@ -140,11 +140,13 @@ const EditProfile = () => {
           </div>
         </div>
 
+        <div className="border-t border-gray-200 my-6"></div>
+
         {/* About Section */}
-        <div className="mb-8 pb-8 border-b border-gray-200">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">About You</h2>
 
-          <div className="mb-6">
+          <div>
             <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
               Bio
             </label>
@@ -160,11 +162,13 @@ const EditProfile = () => {
           </div>
         </div>
 
+        <div className="border-t border-gray-200 my-6"></div>
+
         {/* Skills Section */}
-        <div className="mb-8 pb-8 border-b border-gray-200">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Skills</h2>
 
-          <div className="mb-6">
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Your Skills
             </label>
@@ -190,17 +194,21 @@ const EditProfile = () => {
           </div>
         </div>
 
+        <div className="border-t border-gray-200 my-6"></div>
+
         {/* Profile Photo */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Photo</h2>
 
           <div className="flex items-center gap-4">
             <div className="shrink-0">
               {formData.photo ? (
                 <img className="h-16 w-16 rounded-full object-cover" src={URL.createObjectURL(formData.photo)} alt="Current profile" />
+              ) : user.avatar && user.avatar.url ? (
+                <img className="h-16 w-16 rounded-full object-cover" src={user.avatar.url} alt="Current profile" />
               ) : (
                 <div className="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500">Photo</span>
+                  <span className="text-gray-500">{user.username.charAt(0).toUpperCase()}</span>
                 </div>
               )}
             </div>
@@ -221,7 +229,7 @@ const EditProfile = () => {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end pt-6">
+        <div className="flex justify-end">
           <button
             type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
