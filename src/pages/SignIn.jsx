@@ -20,40 +20,32 @@ const SignIn = () => {
 
     try {
       const response = await codeCrewAPI.login({ email, password });
+const { data } = response.data;
 
-      const body = response.data;
-      console.log('Body:', body);
-
-
-      if (!body.success) {
-        throw new Error(body.message || 'Login Failed');
-      };
-
-
-      const data = body.data;
-      console.log('data:', data);
-      const user = body.data.user;
-      console.log('user:', user);
-
-      if (user) {
-        setUser(user);
-        localStorage.setItem('user', JSON.stringify(user));
-        navigate('/');
-      } else {
-        throw new Error(body.message || 'Login Failed');
-      }
-    } catch (err) {
-      console.error('Login error:', err.message);
-      setError(err.message);
-    }
-  };
-
+if (data && data.user) {
+  setUser(data.user);
+  localStorage.setItem('user',JSON.stringify(data.user));
+  navigate('/');
+}else{
+  setError("Something went wrong.Try again in a bit - we're fixing it!")
+}
+}catch (err) {
+  setError('That didnt work. Double-check your login info and give it another go!');
+}
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen  px-4">
       <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-2xl font-medium text-gray-900 text-center">Sign in</h5>
+
+          {error && (
+            <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-md text-center">
+              {error}
+            </div>
+          )}
+
 
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">
